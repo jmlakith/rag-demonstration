@@ -1,0 +1,2 @@
+All employees must use the company VPN when accessing internal systems.
+Personal devices are not permitted for production access.
