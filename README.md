@@ -1,86 +1,110 @@
-# Company Copilot 🤖
+# NotebookLM Lite 🤖
 
-A RAG (Retrieval-Augmented Generation) demonstration using Streamlit, LangChain, FAISS, and Ollama to create an intelligent company policy assistant.
+A lightweight, privacy-focused RAG (Retrieval-Augmented Generation) application that runs 100% locally. Think of it as your own personal NotebookLM that works offline with your private documents.
 
-## Features
+Built with Streamlit, LangChain, FAISS, and Ollama - no cloud APIs, no data sharing, completely free.
 
-- **Document Loading**: Automatically loads company documents from the `docs/` directory
-- **Vector Storage**: Uses FAISS for efficient semantic search
-- **Local LLM**: Powered by Ollama (Mistral) for privacy-focused inference
-- **Source Attribution**: Shows which documents were used to answer each question
-- **Interactive UI**: Clean Streamlit chat interface
+## ✨ Features
 
-## Prerequisites
+- 🔒 **100% Local & Private**: All processing happens on your machine
+- 📚 **Easy Document Loading**: Drop `.txt` files in the `docs/` folder
+- 🔍 **Semantic Search**: Uses FAISS vector database for intelligent retrieval
+- 🤖 **Multiple LLM Support**: Works with any Ollama model (Mistral, Llama, etc.)
+- 📝 **Source Attribution**: Always shows which documents were used
+- 💬 **Clean Chat Interface**: Simple, intuitive Streamlit UI
+- 🆓 **Completely Free**: No API costs, no subscriptions
 
-### Software Requirements
+## 🎯 Use Cases
 
-- Python 3.10+
-- pip
-- Ollama installed and running
+- Personal knowledge base from notes and documents
+- Company policy assistant
+- Research paper Q&A
+- Study material helper
+- Technical documentation explorer
 
-### Install Ollama
+## 📋 Prerequisites
 
+- **Python 3.10 or higher**
+- **4GB+ RAM** (8GB recommended for larger documents)
+- **macOS, Linux, or Windows**
+
+## 🚀 Quick Start
+
+### 1. Install Ollama
+
+**macOS/Linux:**
 ```bash
+# macOS
 brew install ollama
-ollama pull mistral
+
+# Linux
+curl -fsSL https://ollama.ai/install.sh | sh
 ```
 
-You can replace `mistral` with `llama3` if you prefer.
+**Windows:**
+- Download from [ollama.ai](https://ollama.ai/download/windows)
+- Run the installer
 
-## Project Structure
-
-```
-rag-demonstration/
-├── app.py                      # Main Streamlit application
-├── requirements.txt            # Python dependencies
-├── .gitignore                 # Git ignore patterns
-└── docs/                      # Company documents
-    ├── employee_handbook.txt  # Remote work policy
-    └── it_policy.txt          # IT and security policies
-```
-
-## Installation
-
-1. **Clone or navigate to the project directory**
+### 2. Download an LLM Model
 
 ```bash
+# Start Ollama service (runs in background)
+ollama serve
+
+# In a new terminal, pull Mistral (recommended, ~4GB)
+ollama pull mistral
+
+# OR use Llama 3 (larger but more capable, ~8GB)
+ollama pull llama3
+```
+
+### 3. Clone This Repository
+
+```bash
+git clone https://github.com/YOUR_USERNAME/rag-demonstration.git
 cd rag-demonstration
 ```
 
-2. **Create a virtual environment (recommended)**
+### 4. Set Up Python Environment
 
 ```bash
+# Create virtual environment
 python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
 
-3. **Install dependencies**
+# Activate it
+source venv/bin/activate  # macOS/Linux
+venv\Scripts\activate     # Windows
 
-```bash
+# Install dependencies
 pip install -r requirements.txt
 ```
 
-## Usage
-
-1. **Make sure Ollama is running**
-
-```bash
-ollama serve
-```
-
-2. **Run the Streamlit app**
+### 5. Run the App
 
 ```bash
 streamlit run app.py
 ```
 
-3. **Open your browser** to the URL shown (typically `http://localhost:8501`)
+The app will open automatically in your browser at `http://localhost:8501`
 
-4. **Ask questions** like:
-   - "Can I work remotely?"
-   - "Do I need manager approval for remote work?"
-   - "What devices can I use for production access?"
-   - "Do I need to use a VPN?"
+## 📁 Adding Your Own Documents
+
+1. Add any `.txt` files to the `docs/` folder
+2. Restart the app
+3. Start asking questions!
+
+**Tips:**
+- Break large documents into smaller files for better context
+- Use descriptive filenames (they appear in source citations)
+- Plain text works best, but you can extend the loader for PDFs
+
+## 💡 Example Questions
+
+With the default demo documents:
+- "Can I work remotely?"
+- "Do I need manager approval for remote work?"
+- "What devices can I use for production access?"
+- "Do I need to use a VPN?"
 
 ## How It Works
 

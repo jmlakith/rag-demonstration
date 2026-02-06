@@ -1,10 +1,12 @@
 import streamlit as st
-from langchain.document_loaders import TextLoader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.embeddings import HuggingFaceEmbeddings
-from langchain.vectorstores import FAISS
-from langchain.chains import RetrievalQA
-from langchain.llms import Ollama
+from langchain_community.document_loaders import TextLoader
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_community.vectorstores import FAISS
+from langchain_community.llms import Ollama
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.runnables import RunnablePassthrough
+from langchain_core.output_parsers import StrOutputParser
 import os
 
 # -----------------------------
@@ -52,10 +54,24 @@ llm = Ollama(
 # -----------------------------
 # RAG Chain
 # -----------------------------
-qa = RetrievalQA.from_chain_type(
-    llm=llm,
-    retriever=retriever,
-    return_source_documents=True
+prompt_template = """Answer the question based only on the following context:
+
+{context}
+
+Question: {question}
+
+Answer:"""
+
+prompt = ChatPromptTemplate.from_template(prompt_template)
+
+def format_docs(docs):
+    return "\n\n".join(doc.page_content for doc in docs)
+
+rag_chain = (
+    {"context": retriever | format_docs, "question": RunnablePassthrough()}
+    | prompt
+    | llm
+    | StrOutputParser()
 )
 
 # -----------------------------
@@ -67,11 +83,14 @@ if question:
     st.chat_message("user").write(question)
 
     with st.spinner("Thinking..."):
-        result = qa(question)
+        # Get answer
+        answer = rag_chain.invoke(question)
+        # Get source documents
+        source_docs = retriever.invoke(question)
 
-    st.chat_message("assistant").write(result["result"])
+    st.chat_message("assistant").write(answer)
 
     with st.expander("Sources used"):
-        for i, doc in enumerate(result["source_documents"], 1):
+        for i, doc in enumerate(source_docs, 1):
             st.markdown(f"**Source {i}:**")
             st.write(doc.page_content)
