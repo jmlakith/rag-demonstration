@@ -61,7 +61,7 @@ ollama pull llama3
 ### 3. Clone This Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/rag-demonstration.git
+git clone https://github.com/jmlakith/rag-demonstration.git
 cd rag-demonstration
 ```
 
